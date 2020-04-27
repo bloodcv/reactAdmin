@@ -33,8 +33,10 @@ class Login extends Component {
 const FormItem = Form.Item;
 const NormalLoginForm = () => {
   const onFinish = values => {
-    console.log('Received values of form: ', values);
+    console.log('获取form表单内容: ', values);
   };
+
+  /* 对密码进行自定义验证 */
 
   return (
     <Form
@@ -44,7 +46,13 @@ const NormalLoginForm = () => {
       <FormItem
         hasFeedback
         name="username"
-        rules={[{ required: true, message: '请输入用户名' }]}>
+        rules={[ // 配置对象：属性名是特定的一些名称
+          // 声明式验证：直接使用别人定义好的验证规则进行验证
+          { required: true, whitespace: true, message: '请输入' },
+          { min: 4, message: '至少4位'},
+          { max: 12, message: '最多12位'},
+          { pattern: /^[a-zA-Z0-9_]+$/, message: '必须是英文数字或者下滑线组成' }
+        ]}>
         <Input
           allowClear
           prefix={<UserOutlined className="site-form-item-icon" />}
@@ -53,7 +61,24 @@ const NormalLoginForm = () => {
       <FormItem
         hasFeedback
         name="password"
-        rules={[{ required: true, message: '请输入密码' }]}>
+        rules={[
+          // 自定义验证
+          {
+            validator: (rule, value) => {
+              if (!value) {
+                return Promise.reject('必填')
+              } else if (value.length < 4) {
+                return Promise.reject('至少4位')
+              } else if (value.length > 12) {
+                return Promise.reject('至多12位')
+              } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+                return Promise.reject('必须是英文数字或者下滑线组成')
+              } else {
+                return Promise.resolve()
+              }
+            }
+          }
+        ]}>
         <Input
           allowClear
           prefix={<LockOutlined className="site-form-item-icon" />}
