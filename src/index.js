@@ -4,13 +4,22 @@
  * @Autor: saya
  * @Date: 2020-04-22 15:21:58
  * @LastEditors: saya
- * @LastEditTime: 2020-04-22 16:42:33
+ * @LastEditTime: 2020-04-29 16:08:07
  */
 
- import React from 'react'
- import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
 
- import App from './App'
+import memoryUtils from "./utils/memoryUtils";
+import storageUtils from "./utils/storageUtils";
 
- // 将App组件标签渲染到index页面的div上
- ReactDOM.render(<App></App>, document.getElementById('root'));
+import App from "./App";
+
+//如果local中保存了user, 将user保存到内存中
+const user = storageUtils.getUser();
+if (user && user._id) {
+  memoryUtils.user = user;
+}
+
+// 将App组件标签渲染到index页面的div上
+ReactDOM.render(<App></App>, document.getElementById("root"));
