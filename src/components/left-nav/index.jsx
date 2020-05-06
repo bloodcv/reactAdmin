@@ -16,7 +16,7 @@ export default class LeftNav extends Component {
    * 根据menu的数据数组生成对应的标签数组
    * 使用map + 递归调用
    */
-  getMenuNodes = menuList => {
+  getMenuNodes_map = menuList => {
     return menuList.map(item => {
       if (!item.children) {
         return (
@@ -37,7 +37,7 @@ export default class LeftNav extends Component {
                 {item.title}
               </>
             }>
-            {this.getMenuNodes(item.children)}
+            {this.getMenuNodes_map(item.children)}
           </SubMenu>
         );
       }
@@ -48,6 +48,36 @@ export default class LeftNav extends Component {
    * 根据menu的数据数组生成对应的标签数组
    * 使用reduce + 递归调用
    */
+  getMenuNodes = menuList => {
+    return menuList.reduce((pre, item) => {
+      // 没有子节点
+      if (!item.children) {
+        pre.push(
+          <MenuItem key={item.key}>
+            <Link to={item.key}>
+              {React.createElement(Icon[item.icon])}
+              <span>{item.title}</span>
+            </Link>
+          </MenuItem>
+        );
+        // 有子节点
+      } else {
+        pre.push(
+          <SubMenu
+            key={item.key}
+            title={
+              <>
+                {React.createElement(Icon[item.icon])}
+                {item.title}
+              </>
+            }>
+            {this.getMenuNodes(item.children)}
+          </SubMenu>
+        );
+      }
+      return pre;
+    }, []);
+  };
 
   render() {
     return (
@@ -56,7 +86,10 @@ export default class LeftNav extends Component {
           <img src={logo} alt='logo' />
           <h1>管理后台</h1>
         </Link>
-        <Menu mode='inline' theme='dark'>
+        <Menu
+          defaultSelectedKeys={[menuList[0].key]}
+          mode='inline'
+          theme='dark'>
           {this.getMenuNodes(menuList)}
         </Menu>
       </div>

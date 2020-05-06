@@ -48,7 +48,7 @@ export default class Admin extends Component {
               <Redirect to="/home"></Redirect>
             </Switch>
           </Content>
-          <Footer style={{ textAlign: "center", color: "#ccc" }}>Footer</Footer>
+          <Footer style={{ textAlign: "center", color: "#aaa" }}>Footer</Footer>
         </Layout>
       </Layout>
     );
