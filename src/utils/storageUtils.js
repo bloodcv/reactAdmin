@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-29 15:47:20
  * @LastEditors: saya
- * @LastEditTime: 2020-04-29 16:16:55
+ * @LastEditTime: 2020-05-08 11:25:38
  */
 
 /**
@@ -14,15 +14,15 @@
  * 包含 n 个操作 local storage 的工具函数的模块
  */
 
-import store from 'store'
+import store from "store";
 
-const USER_KEY = 'user_key';
+const USER_KEY = "user_key";
 
 export default {
   saveUser(user) {
     // localStorage 只能保存string，如果传递是对象，会自动调用对象的toString()并保存
     // localStorage.setItem(USER_KEY, JSON.stringify(user)); // 保存的必须是对象的 json 串
-    store.set(USER_KEY, user);  // 内部会自动转换成 json 再保存
+    store.set(USER_KEY, user); // 内部会自动转换成 json 再保存
   },
   getUser() {
     // 如果存在 , 需要返回的是对象 , 如果没有值 , 返回 {}
