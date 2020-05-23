@@ -1,23 +1,37 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-import "./index.less";
-import weatherPng from "./imgs/weather.png";
-import { getDateAllStr } from "../../utils/dateUtils";
+import './index.less';
+import weatherPng from './imgs/weather.png';
+import { reqWeather } from '../../api/index';
+import menuList from '../../config/menuConfig';
+import { getDateAllStr } from '../../utils/dateUtils';
 
-export default class Header extends Component {
+class Header extends Component {
   state = {
-    city: "",
-    weather: "",
-    currentTime: "",
+    city: '',
+    weather: '',
+    currentTime: '',
   };
 
-  getWeather = () => {
+  getCurrentTime = () => {
     setInterval(() => {
       this.setState({ currentTime: getDateAllStr(Date.now()) });
     }, 1000);
   };
 
+  getWeather = async () => {
+    const { city, weather } = await reqWeather('上海');
+    this.setState({ city, weather });
+  };
+
+  getTitle = () => {
+    const path = this.props.location.pathname;
+    // menuList.forEach(item)
+  };
+
   componentDidMount() {
+    this.getCurrentTime();
     this.getWeather();
   }
 
@@ -44,3 +58,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withRouter(Header);
