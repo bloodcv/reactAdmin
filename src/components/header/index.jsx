@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { message } from "antd";
+import { message, Modal, Button, Space } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import "./index.less";
 import weatherPng from "./imgs/weather.png";
+import LinkButton from "../link-button";
 import { reqWeather } from "../../api/index";
 import menuList from "../../config/menuConfig";
 import { getDateAllStr } from "../../utils/dateUtils";
@@ -49,11 +51,16 @@ class Header extends Component {
   };
 
   logOut = () => {
-    console.log(4444);
-    memoryUtils.user = {};
-    storageUtils.removeUser();
-    this.props.history.replace("/login");
-    message.success("退出成功");
+    Modal.confirm({
+      title: "确定退出?",
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => {
+        memoryUtils.user = {};
+        storageUtils.removeUser();
+        this.props.history.replace("/login");
+        message.success("退出成功");
+      },
+    });
   };
 
   componentDidMount() {
@@ -75,13 +82,13 @@ class Header extends Component {
       <header>
         <div className='header-top'>
           <span>欢迎，{this.user}</span>
-          <button onClick={this.logOut}>退出</button>
+          <LinkButton onClick={this.logOut}>退出</LinkButton>
         </div>
         <div className='header-bottom'>
           <div className='header-bottom-left'>{title}</div>
           <div className='header-bottom-right'>
             <span>{currentTime}</span>
-            <img src={weatherPng} alt='晴' />
+            <img src={weatherPng} alt='天气信息' />
             <span>
               {city}-{weather}
             </span>

@@ -3,12 +3,14 @@
  * @Version: 1.0
  * @Autor: saya
  * @Date: 2020-04-22 15:21:58
- * @LastEditors: saya
- * @LastEditTime: 2020-04-29 16:08:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-26 19:01:41
  */
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/es/locale/zh_CN";
 
 import memoryUtils from "./utils/memoryUtils";
 import storageUtils from "./utils/storageUtils";
@@ -22,4 +24,9 @@ if (user && user._id) {
 }
 
 // 将App组件标签渲染到index页面的div上
-ReactDOM.render(<App></App>, document.getElementById("root"));
+ReactDOM.render(
+  <ConfigProvider locale={zhCN}>
+    <App></App>
+  </ConfigProvider>,
+  document.getElementById("root")
+);
