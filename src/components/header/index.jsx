@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { message, Modal, Button, Space } from "antd";
+import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import "./index.less";
