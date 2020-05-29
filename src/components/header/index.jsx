@@ -46,10 +46,6 @@ class Header extends Component {
     return title;
   };
 
-  getUser = () => {
-    this.user = memoryUtils.user.username;
-  };
-
   logOut = () => {
     Modal.confirm({
       title: "确定退出?",
@@ -66,7 +62,6 @@ class Header extends Component {
   componentDidMount() {
     this.getCurrentTime();
     this.getWeather();
-    this.getUser();
   }
 
   componentWillUnmount() {
@@ -78,10 +73,12 @@ class Header extends Component {
 
     const title = this.getTitle();
 
+    const user = memoryUtils.user;
+
     return (
       <header>
         <div className='header-top'>
-          <span>欢迎，{this.user}</span>
+          <span>欢迎，{user.username}</span>
           <LinkButton onClick={this.logOut}>退出</LinkButton>
         </div>
         <div className='header-bottom'>
