@@ -15,7 +15,7 @@ class Login extends Component {
     const FormItem = Form.Item;
     const onFinish = async values => {
       let res = await reqLogin(values);
-      console.log("获取form表单内容", res);
+      // console.log("获取form表单内容", res);
       if (res.status === 1) {
         message.error(res.msg);
         return;
@@ -116,7 +116,7 @@ const FormItem = Form.Item;
 const NormalLoginForm = () => {
   const onFinish = async values => {
     let res = await reqLogin(values);
-    console.log("获取form表单内容", res);
+    // console.log("获取form表单内容", res);
     if (res.status === 1) {
       message.error(res.msg);
       return;

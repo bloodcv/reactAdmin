@@ -67,7 +67,7 @@ class LeftNav extends Component {
         //查找一个与当前路径匹配的子item
         //如果存在 说明当前二级菜单需要展开
         if (item.children.find(cItem => path.indexOf(cItem.key) > -1)) {
-          console.log('二级菜单需要展开?', item.key)
+          // console.log('二级菜单需要展开?', item.key)
           this.openKey = item.key;
         }
 
@@ -101,7 +101,7 @@ class LeftNav extends Component {
     const path = this.props.location.pathname;
     //得到需要打开菜单的key
     const openKey = this.openKey;
-    console.log(openKey)
+    // console.log(openKey)
 
     return (
       <div className='left-nav'>
@@ -111,7 +111,7 @@ class LeftNav extends Component {
         </Link>
         <Menu
           selectedKeys={[path]}
-          defaultOpenKeys={[this.openKey]}
+          defaultOpenKeys={[openKey]}
           mode='inline'
           theme='dark'>
           {this.menuNodes}
