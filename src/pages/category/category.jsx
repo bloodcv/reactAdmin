@@ -4,6 +4,8 @@ import { PlusOutlined, ArrowRightOutlined } from "@ant-design/icons";
 
 import "../../components/link-button";
 import LinkButton from "../../components/link-button";
+import AddForm from "./components/add-form";
+import UpdateForm from './components/update-form'
 import {
   reqGetCategorys,
   reqAddCategorys,
@@ -34,7 +36,7 @@ export default class Category extends Component {
         width: 300,
         render: category => (
           <Space size='middle'>
-            <LinkButton onClick={this.showUpdate}>修改分类</LinkButton>
+            <LinkButton onClick={() => {this.showUpdate(category)}}>修改分类</LinkButton>
             {/* 如何向事件回调函数传递参数：先定义一个匿名函数，再函数调用处理的函数并传入参数 */}
             {this.state.parentId === "0" ? (
               <LinkButton
@@ -108,37 +110,48 @@ export default class Category extends Component {
 
   // 隐藏模态框
   handleCancel = () => {
-    console.log('隐藏模态框')
+    console.log("隐藏模态框");
     this.setState({
-      showStatus: 0
-    })
-  }
+      showStatus: 0,
+    });
+  };
 
   // 显示添加分类
   showAdd = () => {
-    console.log('显示添加分类')
+    console.log("显示添加分类");
     this.setState({
-      showStatus: 1
-    })
-  }
+      showStatus: 1,
+    });
+  };
 
   // 添加分类
   addCategory = () => {
-    console.log('添加分类')
-  }
+    console.log("添加分类");
+  };
 
   // 显示更新分类
-  showUpdate = () => {
-    console.log('显示更新分类')
+  showUpdate = (category) => {
+    console.log("显示更新分类");
+    // 保存分类对象  如果还没有  指定空对象，防止报错
+    this.category = category;
+    // 更新对象
     this.setState({
-      showStatus: 2
-    })
-  }
+      showStatus: 2,
+    });
+  };
 
   // 更新分类
   updateCategory = () => {
-    console.log('更新分类')
-  }
+    console.log("更新分类");
+    // 1.隐藏确认框
+
+    // 2.发请求更新分类
+    // 准备数据
+    const categoryName = this.updateForm.current.getFieldValue('categoryName');
+    console.log(categoryName, '准备数据')
+    // 3.更新显示列表
+    // this.getCategorys();
+  };
 
   // 为第一次render准备数据
   componentWillMount() {
@@ -157,8 +170,11 @@ export default class Category extends Component {
       loading,
       parentId,
       parentName,
-      showStatus
+      showStatus,
     } = this.state;
+
+    // 读取分类数据
+    const category = this.category || {};
 
     const title =
       parentId === "0" ? (
@@ -189,20 +205,19 @@ export default class Category extends Component {
           pagination={{ defaultPageSize: 5, showQuickJumper: true }}
         />
         <Modal
-          title="添加分类"
+          title='添加分类'
           visible={showStatus === 1}
           onOk={this.addCategory}
-          onCancel={this.handleCancel}
-        >
-          <p>添加分类</p>
+          onCancel={this.handleCancel}>
+          <AddForm />
         </Modal>
         <Modal
-          title="更新分类"
+          title='更新分类'
           visible={showStatus === 2}
           onOk={this.updateCategory}
-          onCancel={this.handleCancel}
-        >
-          <p>更新分类</p>
+          onCancel={this.handleCancel}>
+          {/* 接收分类的名字 */}
+          <UpdateForm categoryName={category.name} getUpdateForm={(form) => {this.updateForm = form}} />
         </Modal>
       </Card>
     );
