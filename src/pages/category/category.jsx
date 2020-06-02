@@ -141,16 +141,24 @@ export default class Category extends Component {
   };
 
   // 更新分类
-  updateCategory = () => {
+  updateCategory = async () => {
     console.log("更新分类");
     // 1.隐藏确认框
-
+    this.setState({
+      showStatus: 0,
+    });
     // 2.发请求更新分类
     // 准备数据
+    const categoryId = this.category._id;
     const categoryName = this.updateForm.current.getFieldValue('categoryName');
     console.log(categoryName, '准备数据')
-    // 3.更新显示列表
-    // this.getCategorys();
+    const updateResult = await reqUpdateCategorys({categoryId, categoryName});
+    if(updateResult.status === 0) {
+      // 3.更新显示列表
+      this.getCategorys();
+    } else {
+      message.error('更新失败')
+    }
   };
 
   // 为第一次render准备数据
