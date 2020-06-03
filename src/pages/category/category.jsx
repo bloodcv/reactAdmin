@@ -150,7 +150,7 @@ export default class Category extends Component {
     // 2.发请求更新分类
     // 准备数据
     const categoryId = this.category._id;
-    const categoryName = this.updateForm.current.getFieldValue('categoryName');
+    const categoryName = this.form.current.getFieldValue('categoryName');
     console.log(categoryName, '准备数据')
     const updateResult = await reqUpdateCategorys({categoryId, categoryName});
     if(updateResult.status === 0) {
@@ -217,7 +217,7 @@ export default class Category extends Component {
           visible={showStatus === 1}
           onOk={this.addCategory}
           onCancel={this.handleCancel}>
-          <AddForm />
+          <AddForm categorys={categorys} parentId={parentId}/>
         </Modal>
         <Modal
           title='更新分类'
@@ -225,7 +225,7 @@ export default class Category extends Component {
           onOk={this.updateCategory}
           onCancel={this.handleCancel}>
           {/* 接收分类的名字 */}
-          <UpdateForm categoryName={category.name} getUpdateForm={(form) => {this.updateForm = form}} />
+          <UpdateForm categoryName={category.name} setForm={(form) => {this.form = form}} />
         </Modal>
       </Card>
     );

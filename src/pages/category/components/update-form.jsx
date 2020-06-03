@@ -7,14 +7,14 @@ const FormItem = Form.Item;
 export default class UpdateForm extends Component {
   static propTypes = {
     categoryName: PropTypes.string,
-    getUpdateForm: PropTypes.func.isRequired,
+    setForm: PropTypes.func.isRequired,
   };
 
   formRef = React.createRef();
 
   componentWillMount() {
     console.log(this.props, this.formRef)
-    this.props.getUpdateForm(this.formRef);
+    this.props.setForm(this.formRef);
   }
 
   render() {

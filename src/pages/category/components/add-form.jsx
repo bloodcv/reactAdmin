@@ -6,18 +6,20 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 export default class AddForm extends Component {
-  // static propTypes = {
-  //   categoryName: PropTypes.string.isRequired
-  // }
+  static propTypes = {
+    categorys: PropTypes.array.isRequired,
+    parentId: PropTypes.string.isRequired,
+    setForm: PropTypes.func.isRequired
+  }
 
   render() {
-    // const { categoryName } = this.props
+    const { categorys, parentId } = this.props
 
     return (
       <Form
         name='addform'
         initialValues={{
-          parentId: "0",
+          parentId: parentId,
           categoryName: "",
         }}
         layout='vertical'>
@@ -32,8 +34,7 @@ export default class AddForm extends Component {
           ]}>
           <Select placeholder='请选择所属品类'>
             <Option value='0'>一级品类</Option>
-            <Option value='1'>电脑</Option>
-            <Option value='2'>主机</Option>
+            
           </Select>
         </FormItem>
         <FormItem
