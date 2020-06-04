@@ -9,15 +9,27 @@ export default class AddForm extends Component {
   static propTypes = {
     categorys: PropTypes.array.isRequired,
     parentId: PropTypes.string.isRequired,
-    setForm: PropTypes.func.isRequired
+    setForm: PropTypes.func.isRequired,
+  };
+
+  formRef = React.createRef();
+
+  componentWillMount() {
+    this.props.setForm(this.formRef);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { categorys, parentId } = nextProps;
+    this.formRef.current.setFieldsValue({ categorys, parentId, categoryName: "" });
   }
 
   render() {
-    const { categorys, parentId } = this.props
+    const { categorys, parentId } = this.props;
 
     return (
       <Form
         name='addform'
+        ref={this.formRef}
         initialValues={{
           parentId: parentId,
           categoryName: "",
@@ -34,7 +46,11 @@ export default class AddForm extends Component {
           ]}>
           <Select placeholder='请选择所属品类'>
             <Option value='0'>一级品类</Option>
-            
+            {categorys.map(item => (
+              <Option value={item._id} key={item._id}>
+                {item.name}
+              </Option>
+            ))}
           </Select>
         </FormItem>
         <FormItem

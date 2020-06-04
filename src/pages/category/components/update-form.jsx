@@ -13,8 +13,14 @@ export default class UpdateForm extends Component {
   formRef = React.createRef();
 
   componentWillMount() {
-    console.log(this.props, this.formRef)
     this.props.setForm(this.formRef);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { categoryName } = nextProps;
+    this.formRef.current.setFieldsValue({
+      categoryName,
+    });
   }
 
   render() {
