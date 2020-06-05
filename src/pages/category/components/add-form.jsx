@@ -41,7 +41,7 @@ export default class AddForm extends Component {
           rules={[
             {
               required: true,
-              message: "必选",
+              message: "所属类别必选",
             },
           ]}>
           <Select placeholder='请选择所属品类'>
@@ -59,7 +59,7 @@ export default class AddForm extends Component {
           rules={[
             {
               required: true,
-              message: "必填",
+              message: "类别名称必须输入",
             },
           ]}>
           <Input placeholder='请输入类别名称' />

@@ -134,19 +134,25 @@ export default class Category extends Component {
   // 添加分类
   addCategory = async () => {
     // console.log("添加分类");
-    // 1.隐藏确认框
-    this.setState({
-      showStatus: 0,
-    });
-    //准备数据
-    const { parentId, categoryName } = this.addForm.current.getFieldsValue();
-    const addResult = await reqAddCategorys(parentId, categoryName);
-    if (addResult.status === 0) {
-      if (parentId === this.state.parentId) {
-        this.getCategorys();
-      } else if (parentId === "0") {
-        this.getCategorys("0");
+    // 进行表单验证， 只有通过验证才进行下一步
+    try {
+      let { parentId, categoryName } = await this.addForm.current.validateFields();
+      // 1.隐藏确认框
+      this.setState({
+        showStatus: 0,
+      });
+      //准备数据
+      // const { parentId, categoryName } = this.addForm.current.getFieldsValue();
+      const addResult = await reqAddCategorys(parentId, categoryName);
+      if (addResult.status === 0) {
+        if (parentId === this.state.parentId) {
+          this.getCategorys();
+        } else if (parentId === "0") {
+          this.getCategorys("0");
+        }
       }
+    } catch (error) {
+      message.error("填写内容有误");
     }
   };
 
@@ -164,21 +170,30 @@ export default class Category extends Component {
   // 更新分类
   updateCategory = async () => {
     // console.log("更新分类");
-    // 1.隐藏确认框
-    this.setState({
-      showStatus: 0,
-    });
-    // 2.发请求更新分类
-    // 准备数据
-    const categoryId = this.category._id;
-    const categoryName = this.updateForm.current.getFieldValue("categoryName");
-    // this.form.current.resetFields();
-    const updateResult = await reqUpdateCategorys({ categoryId, categoryName });
-    if (updateResult.status === 0) {
-      // 3.更新显示列表
-      this.getCategorys();
-    } else {
-      message.error("更新失败");
+    // 进行表单验证， 只有通过验证才进行下一步
+    try {
+      let { categoryName } = await this.updateForm.current.validateFields();
+      // 1.隐藏确认框
+      this.setState({
+        showStatus: 0,
+      });
+      // 2.发请求更新分类
+      // 准备数据
+      const categoryId = this.category._id;
+      // const categoryName = this.updateForm.current.getFieldValue("categoryName");
+      // this.form.current.resetFields();
+      const updateResult = await reqUpdateCategorys({
+        categoryId,
+        categoryName,
+      });
+      if (updateResult.status === 0) {
+        // 3.更新显示列表
+        this.getCategorys();
+      } else {
+        message.error("更新失败");
+      }
+    } catch (error) {
+      message.error("填写内容有误");
     }
   };
 
