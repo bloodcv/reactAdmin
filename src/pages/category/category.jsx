@@ -23,16 +23,14 @@ export default class Category extends Component {
   };
 
   // 初始化table所有列的数组
-  initColums = () => {
+  initColumns = () => {
     this.columns = [
       {
         title: "分类的名称",
         dataIndex: "name",
-        key: "name",
       },
       {
         title: "操作",
-        key: "action",
         width: 300,
         render: category => (
           <Space size='middle'>
@@ -199,7 +197,7 @@ export default class Category extends Component {
 
   // 为第一次render准备数据
   componentWillMount() {
-    this.initColums();
+    this.initColumns();
   }
 
   // 发送异步ajax请求，执行异步任务
