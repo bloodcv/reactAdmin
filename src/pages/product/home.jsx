@@ -17,7 +17,9 @@ export default class ProductHome extends Component {
     searchName: "",
   };
 
-  /* 初始化表头 */
+  /**
+   * 初始化表头
+   */
   initColumns = () => {
     this.columns = [
       {
@@ -61,13 +63,26 @@ export default class ProductHome extends Component {
     ];
   };
 
-  /* 按页码获取商品列表 */
+  /**
+   * 按页码获取商品列表
+   */
   getProducts = async pageNum => {
     this.setState({ loading: true });
-    const resultProducts = await reqGetProducts({
-      pageNum,
-      pageSize: PAGE_SIZE,
-    });
+    const { searchName, searchType } = this.state;
+    let resultProducts;
+    if (searchName) {
+      resultProducts = await reqSrchProducts({
+        pageNum,
+        pageSize: PAGE_SIZE,
+        searchType,
+        searchName
+      })
+    } else {
+      resultProducts = await reqGetProducts({
+        pageNum,
+        pageSize: PAGE_SIZE,
+      });
+    }
     this.setState({ loading: false });
     if (resultProducts.status === 0) {
       const { total, list } = resultProducts.data;
@@ -78,11 +93,16 @@ export default class ProductHome extends Component {
     }
   };
 
-  /* 第一次render前调用一次，为第一次render准备数据 */
+  /**
+   * 第一次render前调用一次，为第一次render准备数据
+   */
   componentWillMount() {
     this.initColumns();
   }
 
+  /**
+   * 第一次render之后执行一次 一般异步调用数据在这里执行
+   */
   componentDidMount() {
     this.getProducts(1);
   }
@@ -92,12 +112,17 @@ export default class ProductHome extends Component {
 
     const title = (
       <Space size='middle'>
-        <Select value={searchType}>
+        <Select
+          value={searchType}
+          onChange={value => this.setState({searchType: value})}>
           <Option value='productName'>按名称搜索</Option>
           <Option value='productDesc'>按描述搜索</Option>
         </Select>
-        <Input placeholder='关键字' value={searchName} />
-        <Button type='primary'>搜索</Button>
+        <Input
+          placeholder='关键字'
+          value={searchName}
+          onChange={e => this.setState({searchName: e.target.value})}/>
+        <Button type='primary' onClick={() => this.getProducts(1)}>搜索</Button>
       </Space>
     );
 
