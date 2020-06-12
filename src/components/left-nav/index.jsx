@@ -66,7 +66,7 @@ class LeftNav extends Component {
       } else {
         //查找一个与当前路径匹配的子item
         //如果存在 说明当前二级菜单需要展开
-        if (item.children.find(cItem => path.indexOf(cItem.key) > -1)) {
+        if (item.children.find(cItem => path.indexOf(cItem.key) === 0)) {
           // console.log('二级菜单需要展开?', item.key)
           this.openKey = item.key;
         }
@@ -98,7 +98,12 @@ class LeftNav extends Component {
 
   render() {
     // 得到当前访问的路由路径
-    const path = this.props.location.pathname;
+    let path = this.props.location.pathname;
+
+    if(path.indexOf('/product/') === 0) {
+      path = '/product'
+    }
+
     //得到需要打开菜单的key
     const openKey = this.openKey;
     // console.log(openKey)
@@ -128,38 +133,3 @@ class LeftNav extends Component {
  */
 
 export default withRouter(LeftNav);
-
-/*
-<Menu
-mode='inline'
-theme='dark'>
-<MenuItem key='1' icon={<PieChartOutlined />}>
-  <Link to='/home'>首页</Link>
-</MenuItem>
-<SubMenu key='sub1' icon={<MailOutlined />} title='商品'>
-  <MenuItem key='2' icon={<PieChartOutlined />}>
-    <Link to='/category'>品类管理</Link>
-  </MenuItem>
-  <MenuItem key='3' icon={<PieChartOutlined />}>
-    <Link to='/product'>商品管理</Link>
-  </MenuItem>
-</SubMenu>
-<MenuItem key='4' icon={<PieChartOutlined />}>
-  <Link to='/user'>用户管理</Link>
-</MenuItem>
-<MenuItem key='5' icon={<PieChartOutlined />}>
-  <Link to='/role'>角色管理</Link>
-</MenuItem>
-<SubMenu key='sub2' icon={<MailOutlined />} title='图形图表'>
-  <MenuItem key='6' icon={<PieChartOutlined />}>
-    <Link to='/bar'>柱形图</Link>
-  </MenuItem>
-  <MenuItem key='7' icon={<PieChartOutlined />}>
-    <Link to='/line'>折线图</Link>
-  </MenuItem>
-  <MenuItem key='8' icon={<PieChartOutlined />}>
-    <Link to='/pie'>饼图</Link>
-  </MenuItem>
-</SubMenu>
-</Menu>
- */

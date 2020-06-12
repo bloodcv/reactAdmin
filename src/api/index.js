@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-06-08 15:36:45
+ * @LastEditTime: 2020-06-11 15:11:44
  */
 
 /**
@@ -17,35 +17,47 @@ import jsonp from "jsonp";
 
 import { message } from "antd";
 
-// 登录
+/**
+ * 登录
+ */
 export const reqLogin = params => ajax("/login", params, "POST");
-// 获取一级或某个二级分类列表
-export const reqGetCategorys = parentId =>
-  ajax("/manage/category/list", { parentId });
-// 添加分类
+/**
+ * 获取一级或某个二级分类列表
+ */
+export const reqGetCategorys = parentId => ajax("/manage/category/list", { parentId });
+/**
+ * 添加分类
+ */
 export const reqAddCategorys = (parentId, categoryName) =>
   ajax("/manage/category/add", { parentId, categoryName }, "POST");
-// 更新品类名称
+/**
+ * 更新品类名称
+ */
 export const reqUpdateCategorys = ({ categoryId, categoryName }) =>
   ajax("/manage/category/update", { categoryId, categoryName }, "POST");
-// 获取商品分页列表
-export const reqGetProducts = ({ pageNum, pageSize }) =>
-  ajax("/manage/product/list", { pageNum, pageSize });
+/**
+ * 获取商品分页列表
+ */
+export const reqGetProducts = ({ pageNum, pageSize }) => ajax("/manage/product/list", { pageNum, pageSize });
 /**
  * 根据搜索内容搜索商品分页列表
  * searchType: productName/productDesc 作为搜索的key
  */
-export const reqSrchProducts = ({
-  pageNum,
-  pageSize,
-  searchType,
-  searchName,
-}) =>
+export const reqSrchProducts = ({ pageNum, pageSize, searchType, searchName }) =>
   ajax("/manage/product/search", {
     pageNum,
     pageSize,
     [searchType]: searchName,
   });
+/**
+ * 根据商品id获取商品信息
+ */
+export const reqGetCategoryInfo = categoryId => ajax("/manage/category/info", { categoryId });
+/**
+ * 对商品进行上架/下架处理
+ */
+export const reqUpdateCategoryStatus = ({ productId, status }) =>
+  ajax("/manage/product/updateStatus", { productId, status }, "POST");
 
 /**
  * jsonp请求的接口请求函数
