@@ -25,3 +25,24 @@
     }
   }
 }
+.product-addupdate {
+  .addupdate-form-price {
+    width: calc(100% - 30px);
+    position: relative;
+    &:after {
+      position: absolute;
+      content: "元";
+      width: 30px;
+      right: -31px;
+      bottom: -1px;
+      top: -1px;
+      font-weight: normal;
+      font-size: 14px;
+      text-align: center;
+      background-color: #fafafa;
+      border: 1px solid #d9d9d9;
+      border-left: 0;
+      line-height: 2;
+    }
+  }
+}
