@@ -12,71 +12,121 @@ export default class ProductAddUpdate extends Component {
     options: [],
   };
 
-  initOptions = async () => {
-    const result = await reqGetCategorys("0");
-    if (result.status === 0) {
-      const options = result.data.map(c => ({
-        value: c._id,
-        label: c.name,
-        isLeaf: false,
-      }));
-      this.setState({
-        options: [...options],
-      });
+  /**
+   * 异步获取一级/二级分类列表，并显示
+   * async函数的返回值是一个新的promise对象
+   * promise的结果和值由async的结果决定
+   */
+  getCategorys = async (parentId) => {
+    const result = await reqGetCategorys(parentId);
+    if(result.status === 0) {
+      const categorys = result.data;
+      if (parentId === '0') {
+        // 如果是一级分类列表
+        this.initOptions(categorys);
+      } else {
+        // 如果是二级分类列表
+        // 返回二级列表 ==> 当前async函数返回的promise就会是成功状态并且value值为categorys
+        return categorys;
+      }
     }
-  };
+  }
 
-  loadData = selectedOptions => {
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.loading = true;
+  initOptions = (categorys) => {
+    // 根据categorys生成options数组
+    const options = categorys.map(c => ({
+      value: c._id,
+      label: c.name,
+      isLeaf: false, //不是叶子节点
+    }));
 
-    
+    // 如果是一个二级分类商品的更新
 
+    if (1) {
+      // 获取对应的二级分类列表
 
+      // 生成二级下拉列表的options
 
-    // load options lazily
-    setTimeout(() => {
-      targetOption.loading = false;
-      targetOption.children = [
-        {
-          label: `${targetOption.label} Dynamic 1`,
-          value: "dynamic1",
-        },
-        {
-          label: `${targetOption.label} Dynamic 2`,
-          value: "dynamic2",
-        },
-      ];
-      this.setState({
-        options: [...this.state.options],
-      });
-    }, 1000);
+      // 找到当前商品对应的一级option对象
+
+      // 关联到对应的一级option对象
+
+    }
+
+    // 更新options状态
+    this.setState({
+      options: [...options],
+    });
   };
 
   /**
-   * 第一次render之后执行一次，为初始化数据做准备，一般在这里做异步请求操作
+   * 加载下一级列表的回调函数
+   */
+  loadData = async selectedOptions => {
+    // 得到选择的option对象
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    // 显示loading
+    targetOption.loading = true;
+
+    // 根据选中的分类，请求获取二级分类列表
+    const subCategorys = await this.getCategorys(targetOption.value);
+    // 拿到数据，隐藏loading
+    targetOption.loading = false;
+    // 二级分类数组有数据
+    if(subCategorys?.length > 0) {
+      // 生成一个二级列表的options
+      const childOptions = subCategorys.map(c => ({
+        value: c._id,
+        label: c.name,
+        isLeaf: true,
+      }));
+      // 关联到当前option上
+      targetOption.children = [...childOptions];
+    } else {
+      // 当前选中项没有二级分类
+      targetOption.isLeaf = true;
+    }
+    this.setState({
+      options: [...this.state.options],
+    });
+  };
+
+  /**
+   * 提交表单，新增商品
+   */
+  submitForm = (values) => {
+    console.log("Succssssess:", values);
+  }
+
+  /**
+   * 第一次render之前执行一次，为初始化数据做准备
+   */
+  componentWillMount() {
+    // 准备修改商品信息的数据
+  }
+
+  /**
+   * 第一次render之后执行一次，一般在这里做异步请求操作
    */
   componentDidMount() {
-    this.initOptions();
+    this.getCategorys('0');
   }
 
   render() {
     const { options } = this.state;
 
-    const onFinish = values => {
-      console.log("Success:", values);
-    };
-
+    //指定Item布局的配置对象
     const layout = {
-      labelCol: {
+      labelCol: { //左侧label的宽度
         span: 5,
         md: { span: 4 },
         xl: { span: 2 },
       },
-      wrapperCol: {
+      wrapperCol: { // 右侧包裹的宽度
         span: 6,
       },
     };
+    //指定Item布局中某一项的配置对象
     const tailLayout = {
       wrapperCol: {
         offset: 5,
@@ -100,7 +150,7 @@ export default class ProductAddUpdate extends Component {
 
     return (
       <Card className='product-addupdate' title={title} bordered={false}>
-        <Form {...layout} name='addUpdateForm' onFinish={onFinish}>
+        <Form {...layout} name='addUpdateForm' onFinish={this.submitForm}>
           <FormItem
             label='商品名称'
             name='name'
@@ -130,14 +180,23 @@ export default class ProductAddUpdate extends Component {
             name='price'
             rules={[
               {
-                required: "true",
+                required: true,
                 type: "number",
                 message: "请输入商品价格",
               },
             ]}>
             <InputNumber placeholder='请输入商品价格' className='addupdate-form-price' />
           </FormItem>
-          <FormItem label='商品分类'>
+          <FormItem
+            label='商品分类'
+            name='categoryIds'
+            rules={[
+              {
+                required: true,
+                type: "array",
+                message: "请选择所属商品分类"
+              }
+            ]}>
             <Cascader options={options} loadData={this.loadData} />
           </FormItem>
           <FormItem label='商品图片'>
