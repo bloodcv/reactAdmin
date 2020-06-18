@@ -103,6 +103,9 @@ export default class ProductAddUpdate extends Component {
    */
   componentWillMount() {
     // 准备修改商品信息的数据
+    const product = this.props.location.state;
+    this.product = product || {};
+    this.isUpdate = !!product;
   }
 
   /**
@@ -114,6 +117,18 @@ export default class ProductAddUpdate extends Component {
 
   render() {
     const { options } = this.state;
+    const { product, isUpdate } = this;
+    const { pCategoryId, categoryId } = product;
+
+    // 准备级联列表的数组
+    const categoryIds = [];
+    if (isUpdate) {
+      if(pCategoryId === '0') {
+        categoryIds.push(categoryId)
+      } else {
+        categoryIds.push(0, 0, pCategoryId, categoryId);
+      }
+    }
 
     //指定Item布局的配置对象
     const layout = {
@@ -144,13 +159,23 @@ export default class ProductAddUpdate extends Component {
           }}>
           <ArrowLeftOutlined />
         </LinkButton>
-        <span>添加商品</span>
+        <span>{ this.isUpdate ? '修改商品' : '新增商品' }</span>
       </Space>
     );
 
     return (
       <Card className='product-addupdate' title={title} bordered={false}>
-        <Form {...layout} name='addUpdateForm' onFinish={this.submitForm}>
+        <Form
+          {...layout}
+          name='addUpdateForm'
+          onFinish={this.submitForm}
+          initialValues={{
+            name: product.name,
+            desc: product.desc,
+            price: product.price,
+            categoryIds: categoryIds
+          }}>
+          {/* 商品名称 */}
           <FormItem
             label='商品名称'
             name='name'
@@ -163,6 +188,7 @@ export default class ProductAddUpdate extends Component {
             ]}>
             <Input allowClear placeholder='请输入商品名称' />
           </FormItem>
+          {/* 商品描述 */}
           <FormItem
             label='商品描述'
             name='desc'
@@ -175,6 +201,7 @@ export default class ProductAddUpdate extends Component {
             ]}>
             <Input allowClear placeholder='请输入商品描述' />
           </FormItem>
+          {/* 商品价格 */}
           <FormItem
             label='商品价格'
             name='price'
