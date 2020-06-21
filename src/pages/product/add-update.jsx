@@ -32,7 +32,7 @@ export default class ProductAddUpdate extends Component {
     }
   }
 
-  initOptions = (categorys) => {
+  initOptions = async (categorys) => {
     // 根据categorys生成options数组
     const options = categorys.map(c => ({
       value: c._id,
@@ -41,16 +41,21 @@ export default class ProductAddUpdate extends Component {
     }));
 
     // 如果是一个二级分类商品的更新
-
-    if (1) {
+    const { product, isUpdate } = this;
+    const { pCategoryId } = product;
+    if (isUpdate && pCategoryId !== '0') {
       // 获取对应的二级分类列表
-
+      const subCategorys = await this.getCategorys(pCategoryId);
       // 生成二级下拉列表的options
-
+      const ChildOptions = subCategorys.map(c => ({
+        value: c._id,
+        label: c.name,
+        isLeaf: true,
+      }))
       // 找到当前商品对应的一级option对象
-
+      const targetOption = options.find(c => c.value === pCategoryId);
       // 关联到对应的一级option对象
-
+      targetOption.children = [...ChildOptions]
     }
 
     // 更新options状态
@@ -103,7 +108,7 @@ export default class ProductAddUpdate extends Component {
    */
   componentWillMount() {
     // 准备修改商品信息的数据
-    const product = this.props.location.state;
+    const product = this.props.location.state?.product;
     this.product = product || {};
     this.isUpdate = !!product;
   }
@@ -126,7 +131,7 @@ export default class ProductAddUpdate extends Component {
       if(pCategoryId === '0') {
         categoryIds.push(categoryId)
       } else {
-        categoryIds.push(0, 0, pCategoryId, categoryId);
+        categoryIds.splice(0, 0, pCategoryId, categoryId);
       }
     }
 
