@@ -157,7 +157,7 @@ export default class ProductAddUpdate extends Component {
       },
     };
     //指定Item布局中某一项的配置对象
-    const tailLayout = {
+    const submitLayout = {
       wrapperCol: {
         offset: 5,
         span: 16,
@@ -257,7 +257,7 @@ export default class ProductAddUpdate extends Component {
           <FormItem label='商品详情'>
             <span>商品详情</span>
           </FormItem>
-          <FormItem {...tailLayout}>
+          <FormItem {...submitLayout}>
             <Button type='primary' htmlType='submit'>
               提交
             </Button>
