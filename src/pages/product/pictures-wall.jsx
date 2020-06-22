@@ -126,6 +126,7 @@ export default class PicturesWall extends Component {
       <div>
         <Upload
           action='/manage/img/upload'
+          accept="image/*"
           name='image'
           listType='picture-card'
           fileList={fileList}

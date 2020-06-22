@@ -7,6 +7,7 @@ import PicturesWall from "./pictures-wall";
 import { reqGetCategorys } from "../../api";
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 export default class ProductAddUpdate extends Component {
   state = {
@@ -207,7 +208,7 @@ export default class ProductAddUpdate extends Component {
                 whitespace: true,
               },
             ]}>
-            <Input allowClear placeholder='请输入商品名称' />
+            <Input placeholder='请输入商品名称' />
           </FormItem>
           {/* 商品描述 */}
           <FormItem
@@ -220,7 +221,9 @@ export default class ProductAddUpdate extends Component {
                 whitespace: true,
               },
             ]}>
-            <Input allowClear placeholder='请输入商品描述' />
+            <TextArea
+              autoSize={{ minRows: 2, maxRows: 6 }}
+              placeholder='请输入商品描述' />
           </FormItem>
           {/* 商品价格 */}
           <FormItem
