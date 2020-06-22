@@ -3,6 +3,7 @@ import { Card, Space, Form, Input, Button, InputNumber, Cascader } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import LinkButton from "../../components/link-button";
+import PicturesWall from "./pictures-wall";
 import { reqGetCategorys } from "../../api";
 
 const FormItem = Form.Item;
@@ -12,16 +13,21 @@ export default class ProductAddUpdate extends Component {
     options: [],
   };
 
+  constructor(props) {
+    super(props);
+    this.pw = React.createRef();
+  }
+
   /**
    * 异步获取一级/二级分类列表，并显示
    * async函数的返回值是一个新的promise对象
    * promise的结果和值由async的结果决定
    */
-  getCategorys = async (parentId) => {
+  getCategorys = async parentId => {
     const result = await reqGetCategorys(parentId);
-    if(result.status === 0) {
+    if (result.status === 0) {
       const categorys = result.data;
-      if (parentId === '0') {
+      if (parentId === "0") {
         // 如果是一级分类列表
         this.initOptions(categorys);
       } else {
@@ -30,9 +36,9 @@ export default class ProductAddUpdate extends Component {
         return categorys;
       }
     }
-  }
+  };
 
-  initOptions = async (categorys) => {
+  initOptions = async categorys => {
     // 根据categorys生成options数组
     const options = categorys.map(c => ({
       value: c._id,
@@ -43,7 +49,7 @@ export default class ProductAddUpdate extends Component {
     // 如果是一个二级分类商品的更新
     const { product, isUpdate } = this;
     const { pCategoryId } = product;
-    if (isUpdate && pCategoryId !== '0') {
+    if (isUpdate && pCategoryId !== "0") {
       // 获取对应的二级分类列表
       const subCategorys = await this.getCategorys(pCategoryId);
       // 生成二级下拉列表的options
@@ -51,11 +57,11 @@ export default class ProductAddUpdate extends Component {
         value: c._id,
         label: c.name,
         isLeaf: true,
-      }))
+      }));
       // 找到当前商品对应的一级option对象
       const targetOption = options.find(c => c.value === pCategoryId);
       // 关联到对应的一级option对象
-      targetOption.children = [...ChildOptions]
+      targetOption.children = [...ChildOptions];
     }
 
     // 更新options状态
@@ -78,7 +84,7 @@ export default class ProductAddUpdate extends Component {
     // 拿到数据，隐藏loading
     targetOption.loading = false;
     // 二级分类数组有数据
-    if(subCategorys?.length > 0) {
+    if (subCategorys?.length > 0) {
       // 生成一个二级列表的options
       const childOptions = subCategorys.map(c => ({
         value: c._id,
@@ -99,9 +105,10 @@ export default class ProductAddUpdate extends Component {
   /**
    * 提交表单，新增商品
    */
-  submitForm = (values) => {
-    console.log("Succssssess:", values);
-  }
+  submitForm = values => {
+    const imgs = this.pw.current.getImgs();
+    console.log("提交表单，新增商品:", { values, imgs });
+  };
 
   /**
    * 第一次render之前执行一次，为初始化数据做准备
@@ -117,19 +124,19 @@ export default class ProductAddUpdate extends Component {
    * 第一次render之后执行一次，一般在这里做异步请求操作
    */
   componentDidMount() {
-    this.getCategorys('0');
+    this.getCategorys("0");
   }
 
   render() {
     const { options } = this.state;
     const { product, isUpdate } = this;
-    const { pCategoryId, categoryId } = product;
+    const { pCategoryId, categoryId, imgs } = product;
 
     // 准备级联列表的数组
     const categoryIds = [];
     if (isUpdate) {
-      if(pCategoryId === '0') {
-        categoryIds.push(categoryId)
+      if (pCategoryId === "0") {
+        categoryIds.push(categoryId);
       } else {
         categoryIds.splice(0, 0, pCategoryId, categoryId);
       }
@@ -137,12 +144,14 @@ export default class ProductAddUpdate extends Component {
 
     //指定Item布局的配置对象
     const layout = {
-      labelCol: { //左侧label的宽度
+      labelCol: {
+        //左侧label的宽度
         span: 5,
         md: { span: 4 },
         xl: { span: 2 },
       },
-      wrapperCol: { // 右侧包裹的宽度
+      wrapperCol: {
+        // 右侧包裹的宽度
         span: 6,
       },
     };
@@ -155,6 +164,13 @@ export default class ProductAddUpdate extends Component {
         xl: { offset: 2 },
       },
     };
+    //指定Item布局中某一项的配置对象
+    const imgLayout = {
+      wrapperCol: {
+        // 右侧包裹的宽度
+        span: 18,
+      },
+    };
 
     const title = (
       <Space>
@@ -164,7 +180,7 @@ export default class ProductAddUpdate extends Component {
           }}>
           <ArrowLeftOutlined />
         </LinkButton>
-        <span>{ this.isUpdate ? '修改商品' : '新增商品' }</span>
+        <span>{this.isUpdate ? "修改商品" : "新增商品"}</span>
       </Space>
     );
 
@@ -178,7 +194,7 @@ export default class ProductAddUpdate extends Component {
             name: product.name,
             desc: product.desc,
             price: product.price,
-            categoryIds: categoryIds
+            categoryIds: categoryIds,
           }}>
           {/* 商品名称 */}
           <FormItem
@@ -219,6 +235,7 @@ export default class ProductAddUpdate extends Component {
             ]}>
             <InputNumber placeholder='请输入商品价格' className='addupdate-form-price' />
           </FormItem>
+          {/* 商品分类 */}
           <FormItem
             label='商品分类'
             name='categoryIds'
@@ -226,24 +243,36 @@ export default class ProductAddUpdate extends Component {
               {
                 required: true,
                 type: "array",
-                message: "请选择所属商品分类"
-              }
+                message: "请选择所属商品分类",
+              },
             ]}>
             <Cascader options={options} loadData={this.loadData} />
           </FormItem>
-          <FormItem label='商品图片'>
-            <span>商品图片</span>
+          <FormItem {...imgLayout} label='商品图片'>
+            <PicturesWall ref={this.pw} imgs={imgs} />
           </FormItem>
           <FormItem label='商品详情'>
             <span>商品详情</span>
           </FormItem>
-          <Form.Item {...tailLayout}>
+          <FormItem {...tailLayout}>
             <Button type='primary' htmlType='submit'>
               提交
             </Button>
-          </Form.Item>
+          </FormItem>
         </Form>
       </Card>
     );
   }
 }
+
+/**
+ * 1.子组件调用父组件的方法：将父组件的方法以函数属性的形式传递给子组件，子组件就可以调用
+ * 2.父组件调用子组件的方法：在父组件中通过ref得到子组件标签对象（也就是组件对象），调用其方法
+ */
+
+/**
+ * 使用ref
+ * 1.创建ref容器：this.pw = React.createRef();  写在constructor中
+ * 2.将ref容器交给需要获取的标签元素：<PicturesWall ref={this.pw}/>
+ * 3.通过ref容器读取标签元素：this.pw.current
+ */

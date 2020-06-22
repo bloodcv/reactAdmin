@@ -10,7 +10,10 @@ export default class UpdateForm extends Component {
     setForm: PropTypes.func.isRequired,
   };
 
-  formRef = React.createRef();
+  constructor(props) {
+    super(props);
+    this.formRef = React.createRef();
+  }
 
   componentWillMount() {
     this.props.setForm(this.formRef);

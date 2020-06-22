@@ -111,26 +111,26 @@ export default class ProductHome extends Component {
       products: [
         {
           status: 1,
-          imgs: ["image-1559402396338.jpg"],
+          imgs: ["image-1592796429750.jpg", "image-1592806902335.jpg"],
           _id: "5ca9e05db49ef916541160cd",
           name: "一级分类2 联想ThinkPad 翼4809",
           desc: "一级分类2 年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
-          price: 65999,
+          price: 132684,
           pCategoryId: "0",
-          categoryId: "5edc95fc18c20546b05d3de3",
+          categoryId: "5ecf4d5381502c5e30a34c65",
           detail:
             '<p><span style="color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;">想你所需，超你所想！精致外观，轻薄便携带光驱，内置正版office杜绝盗版死机，全国联保两年！</span> 222</p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">联想（Lenovo）扬天V110 15.6英寸家用轻薄便携商务办公手提笔记本电脑 定制【E2-9010/4G/128G固态】 2G独显 内置</span></p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">99999</span></p>\n',
           __v: 0,
         },
         {
           status: 1,
-          imgs: ["image-1559402396338.jpg"],
+          imgs: ["image-1592804945069.jpg"],
           _id: "5ca9e05db49ef916541160cd",
           name: "二级1-1 联想ThinkPad 翼4809",
           desc: "二级1-1 年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
-          price: 65999,
-          pCategoryId: "5edc95e018c20546b05d3de1",
-          categoryId: "5edc964518c20546b05d3deb",
+          price: 5421346,
+          pCategoryId: "5ecf2f6681502c5e30a34c64",
+          categoryId: "5ed4a9e8b467ee7a64349676",
           detail:
             '<p><span style="color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;">想你所需，超你所想！精致外观，轻薄便携带光驱，内置正版office杜绝盗版死机，全国联保两年！</span> 222</p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">联想（Lenovo）扬天V110 15.6英寸家用轻薄便携商务办公手提笔记本电脑 定制【E2-9010/4G/128G固态】 2G独显 内置</span></p>\n<p><span style="color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;">99999</span></p>\n',
           __v: 0,
