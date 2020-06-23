@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-06-22 14:57:26
+ * @LastEditTime: 2020-06-23 16:07:38
  */
 
 /**
@@ -62,6 +62,10 @@ export const reqUpdateCategoryStatus = ({ productId, status }) =>
  * 删除图片
  */
 export const reqRemovePic = name => ajax("/manage/img/delete", { name }, "POST");
+/**
+ * 新增、更新商品
+ */
+export const reqAddOrUpdateProduct = product => ajax(`/manage/product/${product._id ? 'update' : 'add'}`, product, "POST");
 
 /**
  * jsonp请求的接口请求函数
