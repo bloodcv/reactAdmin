@@ -125,7 +125,6 @@ export default class ProductAddUpdate extends Component {
     if(isUpdate) {
       product._id = this.product._id;
     }
-    return;
     const result = await reqAddOrUpdateProduct(product);
     if(result.status === 0) {
       message.success(`${isUpdate ? '更新' : '新增'}商品成功`);
