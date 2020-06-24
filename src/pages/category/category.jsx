@@ -11,6 +11,7 @@ import {
   reqAddCategorys,
   reqUpdateCategorys,
 } from "../../api/index";
+import { PAGE_SIZE } from "../../utils/constants";
 
 export default class Category extends Component {
   state = {
@@ -244,7 +245,7 @@ export default class Category extends Component {
           dataSource={parentId === "0" ? categorys : subCategorys}
           columns={this.columns}
           rowKey='_id'
-          pagination={{ defaultPageSize: 5, showQuickJumper: true }}
+          pagination={{ defaultPageSize: PAGE_SIZE, showQuickJumper: true }}
         />
         <Modal
           title='添加分类'

@@ -132,7 +132,6 @@ export default class ProductAddUpdate extends Component {
     } else {
       message.error(`${isUpdate ? '更新' : '新增'}商品失败`);
     }
-    console.log("提交表单，新增商品:", { values, imgs, detail });
   };
 
   /**
