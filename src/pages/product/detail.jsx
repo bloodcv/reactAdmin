@@ -4,11 +4,6 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import LinkButton from "../../components/link-button";
 import { reqGetCategoryInfo } from "../../api";
-import img1 from "../../assets/imgs/img1.jpg";
-import img2 from "../../assets/imgs/img2.jpg";
-import img3 from "../../assets/imgs/img3.jpg";
-import img4 from "../../assets/imgs/img4.jpg";
-import img5 from "../../assets/imgs/img5.jpg";
 import { BASE_IMG_URL } from "../../utils/constants";
 
 const ListItem = List.Item;

@@ -19,6 +19,9 @@ export default class UpdateForm extends Component {
     this.props.setForm(this.formRef);
   }
 
+  /**
+   * 当接收到新的属性时自动调用，在render之前，属于更新的状态
+   */
   componentWillReceiveProps(nextProps) {
     const { categoryName } = nextProps;
     this.formRef.current.setFieldsValue({
