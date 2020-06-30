@@ -48,9 +48,7 @@ export default class AuthForm extends Component {
   /**
    * 获取选中的节点
    */
-  getNewMenus = () => {
-    return this.state.checkedKeys
-  }
+  getNewMenus = () => this.state.checkedKeys
 
   componentWillMount() {
     this.treeData = this.getTreeData(menuList);
