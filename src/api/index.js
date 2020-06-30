@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-06-29 14:55:10
+ * @LastEditTime: 2020-06-30 14:07:49
  */
 
 /**
@@ -75,6 +75,11 @@ export const reqRoles = () => ajax("/manage/role/list");
  * 添加角色
  */
 export const reqAddRole = roleName => ajax("/manage/role/add", { roleName }, "POST");
+/**
+ * 更新角色
+ */
+export const reqUpdateRole = role => ajax("/manage/role/update", role, "POST");
+
 
 /**
  * jsonp请求的接口请求函数
