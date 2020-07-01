@@ -7,7 +7,7 @@ import AddForm from "./add-form";
 import AuthForm from "./auth-form";
 import { reqRoles, reqAddRole, reqUpdateRole } from "../../api";
 import memoryUtils from "../../utils/memoryUtils";
-import { getDateAllStr } from "../../utils/dateUtils";
+import { formatDate } from "../../utils/dateUtils";
 
 export default class Role extends Component {
   state = {
@@ -33,12 +33,12 @@ export default class Role extends Component {
       {
         title: "创建时间",
         dataIndex: "create_time",
-        render: getDateAllStr,
+        render: formatDate,
       },
       {
         title: "授权时间",
         dataIndex: "auth_time",
-        render: getDateAllStr,
+        render: formatDate,
       },
       {
         title: "授权人",
