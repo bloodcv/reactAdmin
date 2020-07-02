@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-06-30 14:07:49
+ * @LastEditTime: 2020-07-02 14:04:13
  */
 
 /**
@@ -79,6 +79,14 @@ export const reqAddRole = roleName => ajax("/manage/role/add", { roleName }, "PO
  * 更新角色
  */
 export const reqUpdateRole = role => ajax("/manage/role/update", role, "POST");
+/**
+ * 获取用户列表
+ */
+export const reqUsers = () => ajax('/manage/user/list');
+/**
+ * 新增用户
+ */
+export const reqAddUser = (user) => ajax('/manage/user/add', user, 'POST');
 
 
 /**
