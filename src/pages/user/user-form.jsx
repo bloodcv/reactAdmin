@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
 import { Form, Input, Select } from "antd";
+import compareDeeply from "../../utils/tool";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -25,14 +26,18 @@ export default class UserForm extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const user = {...{
+    const userObj = {
       username: null,
       password: null,
       phone: null,
       email: null,
       role_id: undefined,
-    }, ...nextProps.user}
-    this.formRef.current.setFieldsValue({ ...user })
+    }
+    const { user } = this.props;
+    const compareResult = compareDeeply(nextProps.user, user);
+    if(!compareResult) {
+      this.formRef.current.setFieldsValue({ ...userObj, ...nextProps.user });
+    }
   }
 
   render() {
