@@ -11,6 +11,7 @@ export default class UserForm extends PureComponent {
   static propTypes = {
     setForm: PropTypes.func.isRequired,
     roles: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -23,10 +24,20 @@ export default class UserForm extends PureComponent {
     this.props.setForm(this.formRef);
   }
 
-  render() {
-    const { roles } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const user = {...{
+      username: null,
+      password: null,
+      phone: null,
+      email: null,
+      role_id: undefined,
+    }, ...nextProps.user}
+    this.formRef.current.setFieldsValue({ ...user })
+  }
 
-    const initialValues = {};
+  render() {
+    console.log("form render()");
+    const { roles, user } = this.props;
 
     const layout = {
       labelCol: { span: 4 },
@@ -34,7 +45,17 @@ export default class UserForm extends PureComponent {
     };
 
     return (
-      <Form name='userForm' ref={this.formRef} initialValues={initialValues} {...layout}>
+      <Form
+        name='userForm'
+        ref={this.formRef}
+        initialValues={{
+          username: user.username,
+          password: user.password,
+          phone: user.phone,
+          email: user.email,
+          role_id: user.role_id,
+        }}
+        {...layout}>
         <FormItem
           label='用户名'
           name='username'
@@ -46,17 +67,19 @@ export default class UserForm extends PureComponent {
           ]}>
           <Input placeholder='请输入用户名'></Input>
         </FormItem>
-        <FormItem
-          label='密码'
-          name='password'
-          rules={[
-            {
-              required: true,
-              message: "请输入密码",
-            },
-          ]}>
-          <Password placeholder='请输入密码'></Password>
-        </FormItem>
+        {user._id ? null : (
+          <FormItem
+            label='密码'
+            name='password'
+            rules={[
+              {
+                required: true,
+                message: "请输入密码",
+              },
+            ]}>
+            <Password placeholder='请输入密码'></Password>
+          </FormItem>
+        )}
         <FormItem
           label='电话'
           name='phone'
@@ -85,8 +108,8 @@ export default class UserForm extends PureComponent {
           rules={[
             {
               required: true,
-              message: "请选择角色"
-            }
+              message: "请选择角色",
+            },
           ]}>
           <Select placeholder='请选择角色'>
             {roles.map(role => (

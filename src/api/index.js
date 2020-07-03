@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-07-02 14:04:13
+ * @LastEditTime: 2020-07-03 14:56:03
  */
 
 /**
@@ -82,12 +82,15 @@ export const reqUpdateRole = role => ajax("/manage/role/update", role, "POST");
 /**
  * 获取用户列表
  */
-export const reqUsers = () => ajax('/manage/user/list');
+export const reqUsers = () => ajax("/manage/user/list");
 /**
- * 新增用户
+ * 新增/修改用户
  */
-export const reqAddUser = (user) => ajax('/manage/user/add', user, 'POST');
-
+export const reqAddOrUpdateUser = user => ajax(`/manage/user/${user._id ? 'update' : 'add'}`, user, "POST");
+/**
+ * 删除用户
+ */
+export const reqRemoveUser = userId => ajax("/manage/user/delete", { userId }, "POST");
 
 /**
  * jsonp请求的接口请求函数

@@ -5,7 +5,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { formatDate } from "../../utils/dateUtils";
 import LinkButton from "../../components/link-button";
 import { PAGE_SIZE } from "../../utils/constants";
-import { reqUsers, reqAddUser } from "../../api";
+import { reqUsers, reqAddOrUpdateUser, reqRemoveUser } from "../../api";
 import UserForm from "./user-form";
 
 const Confirm = Modal.confirm;
@@ -14,6 +14,7 @@ export default class User extends Component {
   state = {
     users: [],
     roles: [],
+    user: {},
     isShow: false,
   };
 
@@ -49,7 +50,12 @@ export default class User extends Component {
         render: user => {
           return (
             <Space>
-              <LinkButton>修改</LinkButton>
+              <LinkButton
+                onClick={() => {
+                  this.showUpdate(user);
+                }}>
+                修改
+              </LinkButton>
               <LinkButton
                 onClick={() => {
                   this.removeUser(user);
@@ -89,20 +95,47 @@ export default class User extends Component {
   };
 
   /**
-   * 新增用户
+   * 显示修改用户的界面
+   */
+  showUpdate = user => {
+    // 保存 user
+    this.user = user;
+    this.setState({
+      isShow: true,
+    });
+  };
+
+  /**
+   * 显示添加用户的界面
+   */
+  showAddUser = () => {
+    this.user = null;
+    this.setState({
+      isShow: true,
+    });
+  };
+
+  /**
+   * 新增/修改用户
    */
   addOrUpdateUser = async () => {
     try {
       const formValues = await this.form.current.validateFields();
-      console.log("addOrUpdateUser", formValues);
-      const result = await reqAddUser(formValues);
+      if(this.user) {
+        formValues._id = this.user._id;
+      }
+      console.log('formValues', formValues)
+      const result = await reqAddOrUpdateUser(formValues);
       if (result.status === 0) {
-        message.success("新增成功");
-        const user = result.data;
-        this.setState(state => ({
+        message.success(`${this.user ? '修改' : '新增'}成功`);
+        this.setState({
+          isShow: false
+        });
+        this.getUsers();
+        /* this.setState(state => ({
           isShow: false,
           users: [...state.users, user],
-        }));
+        })); */
         this.form.current.resetFields();
       }
     } catch (error) {
@@ -120,8 +153,14 @@ export default class User extends Component {
       content: `确定删除用户：${user.username}`,
       okText: "确认",
       cancelText: "取消",
-      onOk: () => {
-        console.log("确认删除用户");
+      onOk: async () => {
+        const result = await reqRemoveUser(user._id);
+        if (result.status === 0) {
+          message.success(`删除用户${user.username}成功`);
+          this.getUsers();
+        } else {
+          message.error(`删除用户${user.username}失败`);
+        }
       },
     });
   };
@@ -136,12 +175,10 @@ export default class User extends Component {
 
   render() {
     const { users, roles, isShow } = this.state;
+    const user = this.user || {};
+
     const title = (
-      <Button
-        type='primary'
-        onClick={() => {
-          this.setState({ isShow: true });
-        }}>
+      <Button type='primary' onClick={this.showAddUser}>
         新增用户
       </Button>
     );
@@ -164,9 +201,9 @@ export default class User extends Component {
           onOk={this.addOrUpdateUser}
           onCancel={() => {
             this.setState({ isShow: false });
-            this.form.current.resetFields();
+            // this.form.current.resetFields();
           }}>
-          <UserForm setForm={form => (this.form = form)} roles={roles} />
+          <UserForm setForm={form => (this.form = form)} roles={roles} user={user} />
         </Modal>
       </Card>
     );
