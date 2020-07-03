@@ -132,10 +132,6 @@ export default class User extends Component {
           isShow: false
         });
         this.getUsers();
-        /* this.setState(state => ({
-          isShow: false,
-          users: [...state.users, user],
-        })); */
         this.form.current.resetFields();
       }
     } catch (error) {
