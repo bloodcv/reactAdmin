@@ -3,15 +3,16 @@
  * @Version: 1.0
  * @Autor: saya
  * @Date: 2020-05-05 17:59:29
- * @LastEditors: saya
- * @LastEditTime: 2020-05-05 19:07:32
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-06 15:35:48
  */
 
  const menuList = [
    {
     title: '首页',
     key: '/home',
-    icon: 'PieChartOutlined'
+    icon: 'PieChartOutlined',
+    isPublic: true
    }, {
     title: '商品',
     key: '/products',
