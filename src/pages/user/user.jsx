@@ -124,7 +124,7 @@ export default class User extends Component {
       if(this.user) {
         formValues._id = this.user._id;
       }
-      console.log('formValues', formValues)
+      // console.log('formValues', formValues)
       const result = await reqAddOrUpdateUser(formValues);
       if (result.status === 0) {
         message.success(`${this.user ? '修改' : '新增'}成功`);

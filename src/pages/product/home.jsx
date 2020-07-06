@@ -145,7 +145,7 @@ export default class ProductHome extends Component {
    * 对商品进行上架/下架处理
    */
   updateCategoryStatus = async product => {
-    console.log('updateCategoryStatus', product)
+    // console.log('updateCategoryStatus', product)
     const productId = product._id;
     const status = product.status === 1 ? 2 : 1;
     const resultUpdate = await reqUpdateCategoryStatus({ productId, status });
