@@ -75,7 +75,7 @@ export default class Role extends Component {
   addRole = async () => {
     try {
       const { roleName } = await this.addForm.current.validateFields();
-      console.log("新增角色校验", roleName);
+      // console.log("新增角色校验", roleName);
       const result = await reqAddRole(roleName);
       if (result.status === 0) {
         this.setState({
@@ -108,7 +108,7 @@ export default class Role extends Component {
    * 配置角色权限
    */
   updateRole = async () => {
-    console.log("配置角色权限");
+    // console.log("配置角色权限");
     const role = this.state.role;
     role.menus = this.authFromRef.current.getNewMenus();
     role.auth_time = Date.now();

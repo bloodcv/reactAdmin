@@ -25,7 +25,7 @@ export default class RichTextEditor extends Component {
       const contentBlock = htmlToDraft(detail);
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-        console.log("有detail");
+        // console.log("有detail");
         const editorState = EditorState.createWithContent(contentState);
         this.state = {
           editorState,

@@ -41,7 +41,7 @@ export default class UserForm extends PureComponent {
   }
 
   render() {
-    console.log("form render()");
+    // console.log("form render()");
     const { roles, user } = this.props;
 
     const layout = {

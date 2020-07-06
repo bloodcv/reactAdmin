@@ -39,7 +39,7 @@ export default class AuthForm extends Component {
    * 树节点选中/取消的时候
    */
   onCheck = checkedKeys => {
-    console.log("树节点选中/取消的时候", checkedKeys);
+    // console.log("树节点选中/取消的时候", checkedKeys);
     this.setState({
       checkedKeys
     })
