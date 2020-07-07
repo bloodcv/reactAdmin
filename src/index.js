@@ -1,17 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+/*
+ * @Description: 入口js
+ * @Version: 1.0
+ * @Autor: saya
+ * @Date: 2020-04-22 15:21:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-05-26 19:01:41
+ */
 
+import React from "react";
+import ReactDOM from "react-dom";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/es/locale/zh_CN";
+
+import memoryUtils from "./utils/memoryUtils";
+import storageUtils from "./utils/storageUtils";
+
+import App from "./App";
+
+//如果local中保存了user, 将user保存到内存中
+const user = storageUtils.getUser();
+if (user && user._id) {
+  memoryUtils.user = user;
+}
+
+// 将App组件标签渲染到index页面的div上
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <ConfigProvider locale={zhCN}>
+    <App></App>
+  </ConfigProvider>,
+  document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
