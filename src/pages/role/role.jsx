@@ -169,6 +169,9 @@ export default class Role extends Component {
           rowSelection={{
             type: "radio",
             selectedRowKeys: [role._id],
+            onSelect: (role) => {
+              this.rowClick(role)
+            }
           }}
           onRow={role => {
             return {
