@@ -4,7 +4,7 @@
  * @Autor: saya
  * @Date: 2020-04-28 19:54:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-06-22 14:57:26
+ * @LastEditTime: 2020-07-03 14:56:03
  */
 
 /**
@@ -62,6 +62,35 @@ export const reqUpdateCategoryStatus = ({ productId, status }) =>
  * 删除图片
  */
 export const reqRemovePic = name => ajax("/manage/img/delete", { name }, "POST");
+/**
+ * 新增、更新商品
+ */
+export const reqAddOrUpdateProduct = product =>
+  ajax(`/manage/product/${product._id ? "update" : "add"}`, product, "POST");
+/**
+ * 获取角色列表
+ */
+export const reqRoles = () => ajax("/manage/role/list");
+/**
+ * 添加角色
+ */
+export const reqAddRole = roleName => ajax("/manage/role/add", { roleName }, "POST");
+/**
+ * 更新角色
+ */
+export const reqUpdateRole = role => ajax("/manage/role/update", role, "POST");
+/**
+ * 获取用户列表
+ */
+export const reqUsers = () => ajax("/manage/user/list");
+/**
+ * 新增/修改用户
+ */
+export const reqAddOrUpdateUser = user => ajax(`/manage/user/${user._id ? 'update' : 'add'}`, user, "POST");
+/**
+ * 删除用户
+ */
+export const reqRemoveUser = userId => ajax("/manage/user/delete", { userId }, "POST");
 
 /**
  * jsonp请求的接口请求函数

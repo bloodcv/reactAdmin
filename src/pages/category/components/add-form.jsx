@@ -21,6 +21,9 @@ export default class AddForm extends Component {
     this.props.setForm(this.formRef);
   }
 
+  /**
+   * 当接收到新的属性时自动调用，在render之前，属于更新的状态
+   */
   componentWillReceiveProps(nextProps) {
     const { categorys, parentId } = nextProps;
     this.formRef.current.setFieldsValue({ categorys, parentId, categoryName: "" });

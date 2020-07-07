@@ -77,8 +77,8 @@ export default class PicturesWall extends Component {
   };
 
   handleChange = async ({ file, fileList }) => {
-    console.log("handleChange {file, fileList}", file, fileList);
-    console.log(file.status);
+    // console.log("handleChange {file, fileList}", file, fileList);
+    // console.log(file.status);
     // 一旦上传成功， 将当前上传的file的信息修正（name, url）
     if (file.status === "done") {
       const result = file.response;
@@ -126,6 +126,7 @@ export default class PicturesWall extends Component {
       <div>
         <Upload
           action='/manage/img/upload'
+          accept="image/*"
           name='image'
           listType='picture-card'
           fileList={fileList}

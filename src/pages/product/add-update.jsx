@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { Card, Space, Form, Input, Button, InputNumber, Cascader } from "antd";
+import { Card, Space, Form, Input, Button, InputNumber, Cascader, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import LinkButton from "../../components/link-button";
 import PicturesWall from "./pictures-wall";
-import { reqGetCategorys } from "../../api";
+import RichTextEditor from './rich-text-editor';
+import { reqGetCategorys, reqAddOrUpdateProduct } from "../../api";
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 export default class ProductAddUpdate extends Component {
   state = {
@@ -16,6 +18,7 @@ export default class ProductAddUpdate extends Component {
   constructor(props) {
     super(props);
     this.pw = React.createRef();
+    this.editorRef = React.createRef();
   }
 
   /**
@@ -105,9 +108,30 @@ export default class ProductAddUpdate extends Component {
   /**
    * 提交表单，新增商品
    */
-  submitForm = values => {
+  submitForm = async values => {
+    const {name, desc, price, categoryIds} = values;
     const imgs = this.pw.current.getImgs();
-    console.log("提交表单，新增商品:", { values, imgs });
+    const detail = this.editorRef.current.getDetail();
+    let pCategoryId, categoryId;
+    if(categoryIds.length === 1) {
+      pCategoryId = "0";
+      categoryId = categoryIds[0];
+    } else {
+      pCategoryId = categoryIds[0];
+      categoryId = categoryIds[1];
+    }
+    const { isUpdate } = this;
+    const product = {name, desc, price, imgs, detail, pCategoryId, categoryId};
+    if(isUpdate) {
+      product._id = this.product._id;
+    }
+    const result = await reqAddOrUpdateProduct(product);
+    if(result.status === 0) {
+      message.success(`${isUpdate ? '更新' : '新增'}商品成功`);
+      this.props.history.goBack();
+    } else {
+      message.error(`${isUpdate ? '更新' : '新增'}商品失败`);
+    }
   };
 
   /**
@@ -130,7 +154,7 @@ export default class ProductAddUpdate extends Component {
   render() {
     const { options } = this.state;
     const { product, isUpdate } = this;
-    const { pCategoryId, categoryId, imgs } = product;
+    const { pCategoryId, categoryId, imgs, detail } = product;
 
     // 准备级联列表的数组
     const categoryIds = [];
@@ -156,7 +180,7 @@ export default class ProductAddUpdate extends Component {
       },
     };
     //指定Item布局中某一项的配置对象
-    const tailLayout = {
+    const submitLayout = {
       wrapperCol: {
         offset: 5,
         span: 16,
@@ -169,6 +193,13 @@ export default class ProductAddUpdate extends Component {
       wrapperCol: {
         // 右侧包裹的宽度
         span: 18,
+      },
+    };
+    //指定Item布局中某一项的配置对象
+    const editorLayout = {
+      wrapperCol: {
+        // 右侧包裹的宽度
+        span: 20,
       },
     };
 
@@ -207,7 +238,7 @@ export default class ProductAddUpdate extends Component {
                 whitespace: true,
               },
             ]}>
-            <Input allowClear placeholder='请输入商品名称' />
+            <Input placeholder='请输入商品名称' />
           </FormItem>
           {/* 商品描述 */}
           <FormItem
@@ -220,7 +251,9 @@ export default class ProductAddUpdate extends Component {
                 whitespace: true,
               },
             ]}>
-            <Input allowClear placeholder='请输入商品描述' />
+            <TextArea
+              autoSize={{ minRows: 2, maxRows: 6 }}
+              placeholder='请输入商品描述' />
           </FormItem>
           {/* 商品价格 */}
           <FormItem
@@ -251,10 +284,10 @@ export default class ProductAddUpdate extends Component {
           <FormItem {...imgLayout} label='商品图片'>
             <PicturesWall ref={this.pw} imgs={imgs} />
           </FormItem>
-          <FormItem label='商品详情'>
-            <span>商品详情</span>
+          <FormItem {...editorLayout} label='商品详情'>
+            <RichTextEditor ref={this.editorRef} detail={detail} />
           </FormItem>
-          <FormItem {...tailLayout}>
+          <FormItem {...submitLayout}>
             <Button type='primary' htmlType='submit'>
               提交
             </Button>

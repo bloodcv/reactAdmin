@@ -1,13 +1,13 @@
 /*
  * @Author: saya
  * @Date: 2020-05-19 17:32:45
- * @LastEditTime: 2020-05-19 17:51:00
+ * @LastEditTime: 2020-07-01 14:06:58
  * @LastEditors: Please set LastEditors
  * @Description: 时间工具模块
  * @FilePath: \sggpro\react-admin_client\src\utils\dateUtils.js
  */
 
-export const getDateAllStr = time => {
+export const formatDate = time => {
   if (!time) return "";
   let date = new Date(time);
   let year = date.getFullYear();

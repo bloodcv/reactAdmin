@@ -4,11 +4,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 
 import LinkButton from "../../components/link-button";
 import { reqGetCategoryInfo } from "../../api";
-import img1 from "../../assets/imgs/img1.jpg";
-import img2 from "../../assets/imgs/img2.jpg";
-import img3 from "../../assets/imgs/img3.jpg";
-import img4 from "../../assets/imgs/img4.jpg";
-import img5 from "../../assets/imgs/img5.jpg";
+import { BASE_IMG_URL } from "../../utils/constants";
 
 const ListItem = List.Item;
 
@@ -53,11 +49,11 @@ export default class ProductDetail extends Component {
       // 一次性发送多个请求, 只有都成功了, 才正常处理 Promise.all
       let categoryName1 = "";
       let categoryName2 = "";
-      // const resultCategoryInfo = await Promise.all([reqGetCategoryInfo(pCategoryId), reqGetCategoryInfo(categoryId)]);
-      /* if (resultCategoryInfo[0].status === 0 && resultCategoryInfo[1].status === 0) {
+      const resultCategoryInfo = await Promise.all([reqGetCategoryInfo(pCategoryId), reqGetCategoryInfo(categoryId)]);
+      if (resultCategoryInfo[0].status === 0 && resultCategoryInfo[1].status === 0) {
         categoryName1 = resultCategoryInfo[0].data.name;
         categoryName2 = resultCategoryInfo[1].data.name;
-      } */
+      }
       this.setState({
         categoryName1,
         categoryName2,
@@ -73,7 +69,7 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { name, desc, price, detail } = this.props.location.state.product;
+    const { name, desc, price, detail, imgs } = this.props.location.state.product;
     /* 商品名称
     商品描述
     商品价格
@@ -82,34 +78,6 @@ export default class ProductDetail extends Component {
     商品详情 */
 
     const { categoryName1, categoryName2 } = this.state;
-
-    const imgs = [
-      {
-        src: img1,
-        name: "img1",
-        id: 1,
-      },
-      {
-        src: img2,
-        name: "img2",
-        id: 2,
-      },
-      {
-        src: img3,
-        name: "img3",
-        id: 3,
-      },
-      {
-        src: img4,
-        name: "img4",
-        id: 4,
-      },
-      {
-        src: img5,
-        name: "img5",
-        id: 5,
-      },
-    ];
 
     const title = (
       <Space>
@@ -147,9 +115,9 @@ export default class ProductDetail extends Component {
           <ListItem className='list-wrap'>
             <span className='list-title'>商品图片:</span>
             <div className='list-img-wrap'>
-              {imgs.map(img => (
-                <Card hoverable key={img.id}>
-                  <img src={img.src} alt={img.name} />
+              {imgs.map((img, index) => (
+                <Card hoverable key={index}>
+                  <img src={BASE_IMG_URL + img} alt={img} />
                 </Card>
               ))}
             </div>

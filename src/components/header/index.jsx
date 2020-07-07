@@ -8,7 +8,7 @@ import weatherPng from "./imgs/weather.png";
 import LinkButton from "../link-button";
 import { reqWeather } from "../../api/index";
 import menuList from "../../config/menuConfig";
-import { getDateAllStr } from "../../utils/dateUtils";
+import { formatDate } from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
 
@@ -21,7 +21,7 @@ class Header extends Component {
 
   getCurrentTime = () => {
     this.intervalId = setInterval(() => {
-      this.setState({ currentTime: getDateAllStr(Date.now()) });
+      this.setState({ currentTime: formatDate(Date.now()) });
     }, 1000);
   };
 
@@ -37,7 +37,7 @@ class Header extends Component {
       if (item.key === path) {
         title = item.title;
       } else if (item.children) {
-        const cItem = item.children.find(cItem => cItem.key === path);
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
         if (cItem) {
           title = cItem.title;
         }
