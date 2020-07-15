@@ -7,26 +7,10 @@
  * @LastEditTime: 2020-05-26 19:01:41
  */
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { ConfigProvider } from "antd";
-import zhCN from "antd/es/locale/zh_CN";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import memoryUtils from "./utils/memoryUtils";
-import storageUtils from "./utils/storageUtils";
-
-import App from "./App";
-
-//如果local中保存了user, 将user保存到内存中
-const user = storageUtils.getUser();
-if (user && user._id) {
-  memoryUtils.user = user;
-}
+import App from './App';
 
 // 将App组件标签渲染到index页面的div上
-ReactDOM.render(
-  <ConfigProvider locale={zhCN}>
-    <App></App>
-  </ConfigProvider>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App></App>, document.getElementById('root'));
