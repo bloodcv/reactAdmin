@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Space } from 'antd';
-import PropTypes from 'prop-types';
-
-import { increment, decrement } from './redux/actions'
 
 export default class App extends Component {
-  static propTypes = {
-    store: PropTypes.object.isRequired,
+  state = {
+    count: 0,
   };
 
   constructor(props) {
@@ -20,15 +17,19 @@ export default class App extends Component {
    */
   increment = () => {
     const num = this.numRef.current.value * 1;
-    this.props.store.dispatch(increment(num))
+    this.setState(state => ({
+      count: state.count + num,
+    }));
   };
 
   /**
    * 減少
    */
   decrement = () => {
-    const num = this.numRef.current.value * 1;
-    this.props.store.dispatch(decrement(num))
+    const num = this.numRef.current.value * -1;
+    this.setState(state => ({
+      count: state.count + num,
+    }));
   };
 
   /**
@@ -36,9 +37,11 @@ export default class App extends Component {
    */
   incrementIfOdd = () => {
     const num = this.numRef.current.value * 1;
-    const count = this.props.store.getState();
+    const { count } = this.state;
     if (count % 2 === 1) {
-      this.props.store.dispatch(increment(num))
+      this.setState(state => ({
+        count: state.count + num,
+      }));
     }
   };
 
@@ -48,13 +51,14 @@ export default class App extends Component {
   crementAsync = () => {
     const num = this.numRef.current.value * 1;
     setTimeout(() => {
-      this.props.store.dispatch(increment(num))
-    }, 1000);
+      this.setState((state) => ({
+        count: state.count + num
+      }))
+    }, 1000)
   };
 
   render() {
-    const count = this.props.store.getState();
-
+    const { count } = this.state;
     return (
       <div style={{ margin: '0 auto', maxWidth: '50vw', fontSize: 24 }}>
         <h1>count {count} times</h1>
