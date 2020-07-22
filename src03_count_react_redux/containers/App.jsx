@@ -6,7 +6,7 @@
  */
 import { connect } from 'react-redux';
 
-import { increment, decrement, incrementAsync } from '../redux/actions';
+import { increment, decrement } from '../redux/actions';
 import Counter from '../components/counter';
 
 /**
@@ -17,5 +17,5 @@ export default connect(
   state => ({count: state}),
   // 复杂写法：如果是函数，会自动调用得到对象，将对象中的方法作为函数属性传入UI组件中
   // 简写写法：如果是对象，将对象中的的方法包装成一个新的函数，传入UI组件
-  {increment, decrement, incrementAsync}
+  {increment, decrement}
 )(Counter);

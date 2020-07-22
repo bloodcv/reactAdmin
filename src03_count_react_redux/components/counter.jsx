@@ -12,7 +12,6 @@ export default class Counter extends Component {
     count: PropTypes.number.isRequired,
     increment: PropTypes.func.isRequired,
     decrement: PropTypes.func.isRequired,
-    incrementAsync: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -53,10 +52,9 @@ export default class Counter extends Component {
    */
   crementAsync = () => {
     const num = this.numRef.current.value * 1;
-    /* setTimeout(() => {
+    setTimeout(() => {
       this.props.increment(num);
-    }, 1000); */
-    this.props.incrementAsync(num);
+    }, 1000);
   };
 
   render() {
