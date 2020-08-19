@@ -21,14 +21,37 @@
     }
   }
   .login-content {
+    position: relative;
     width: 20vw;
     min-width: 200px;
     min-height: 200px;
     overflow: hidden;
     background-color: #ffffff5e;
     margin: 25vh auto 0;
-    padding: 16px;
+    padding: 32px 16px 16px;
     border-radius: 10px;
+    .error-msg {
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      background: #f60c1a;
+      color: #ffffff;
+      font-size: 16px;
+      transform: translateY(-30px);
+      transition: all .3s;
+      &.show {
+        visibility: visible;
+        // transform: translateY(0);
+        animation: errortip 5s infinite;
+        -webkit-animation: errortip 5s infinite;
+        animation-iteration-count: 1;
+        -webkit-animation-iteration-count: 1; /*Safari and Chrome*/
+      }
+    }
     > h2 {
       color: #5bb9ff;
       text-align: center;
@@ -38,5 +61,20 @@
     .login-form-button {
       width: 100%;
     }
+  }
+  @keyframes errortip
+  {
+    0%   {transform: translateY(-30px);}
+    25%  {transform: translateY(0);}
+    75%  {transform: translateY(0);}
+    100% {transform: translateY(-30px);}
+  }
+  
+  @-webkit-keyframes errortip /*Safari and Chrome*/
+  {
+    0%   {transform: translateY(-30px);}
+    25%  {transform: translateY(0);}
+    75%  {transform: translateY(0);}
+    100% {transform: translateY(-30px);}
   }
 }
