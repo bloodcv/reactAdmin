@@ -67,7 +67,7 @@ class Login extends Component {
                 { max: 12, message: '最多12位' },
                 {
                   pattern: /^[a-zA-Z0-9_]+$/,
-                  message: '必须是英文数字或者下滑线组成',
+                  message: '必须是英文数字或者下滑线组成!',
                 },
               ]}>
               <Input
