@@ -11,6 +11,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/es/locale/zh_CN";
+import { Provider } from 'react-redux';
+import store from './redux/store'
 
 import memoryUtils from "./utils/memoryUtils";
 import storageUtils from "./utils/storageUtils";
@@ -25,8 +27,12 @@ if (user && user._id) {
 
 // 将App组件标签渲染到index页面的div上
 ReactDOM.render(
-  <ConfigProvider locale={zhCN}>
-    <App></App>
-  </ConfigProvider>,
+  (
+    <Provider store={store}>
+      <ConfigProvider locale={zhCN}>
+        <App></App>
+      </ConfigProvider>      
+    </Provider>
+  ),
   document.getElementById("root")
 );

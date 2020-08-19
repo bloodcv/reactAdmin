@@ -1,39 +1,45 @@
-import React, { Component } from "react";
-import { Form, Input, Button, message } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { Form, Input, Button } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import "./login.less";
-import logo from "../../assets/imgs/logo.png";
+import './login.less';
+import logo from '../../assets/imgs/logo.png';
 
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
-import { reqLogin } from "../../api";
+import { login } from '../../redux/actions'
+/* import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
+import { reqLogin } from '../../api'; */
 
 class Login extends Component {
   render() {
     const FormItem = Form.Item;
     const onFinish = async values => {
-      let res = await reqLogin(values);
+      this.props.login(values)
       // console.log("获取form表单内容", res);
-      if (res.status === 1) {
-        message.error(res.msg);
-        return;
-      }
-      const user = res.data;
-      // 登录成功
-      // 保存用户数据
-      // 提示登录成功，保存用户登录信息，跳转到主页
-      message.success("登陆成功");
-      memoryUtils.user = user;
-      storageUtils.saveUser(user);
-      // 跳转到后台管理路由 ( 已经登录成功，不需要回退了 )
-      this.props.history.replace("/");
+      /**
+       * let res = await reqLogin(values);
+       * if (res.status === 1) {
+       *   message.error(res.msg);
+       *   return;
+       * }
+       * const user = res.data;
+       * // 登录成功
+       * // 保存用户数据
+       * // 提示登录成功，保存用户登录信息，跳转到主页
+       * message.success('登陆成功');
+       * memoryUtils.user = user;
+       * storageUtils.saveUser(user);
+       * // 跳转到后台管理路由 ( 已经登录成功，不需要回退了 )
+       * this.props.history.replace('/home');
+       */
     };
 
+    const user = this.props.user;
     // 如果用户已经登陆 , 自动跳转到 admin
-    if (memoryUtils.user && memoryUtils.user._id) {
-      return <Redirect to='/'></Redirect>;
+    if (user && user._id) {
+      return <Redirect to='/home'></Redirect>;
     }
 
     return (
@@ -48,19 +54,19 @@ class Login extends Component {
             name='normal_login'
             className='login-form'
             onFinish={onFinish}
-            initialValues={{ username: "admin" }}>
+            initialValues={{ username: 'admin' }}>
             <FormItem
               hasFeedback
               name='username'
               rules={[
                 // 配置对象：属性名是特定的一些名称
                 // 声明式验证：直接使用别人定义好的验证规则进行验证
-                { required: true, whitespace: true, message: "请输入" },
-                { min: 4, message: "至少4位" },
-                { max: 12, message: "最多12位" },
+                { required: true, whitespace: true, message: '请输入' },
+                { min: 4, message: '至少4位' },
+                { max: 12, message: '最多12位' },
                 {
                   pattern: /^[a-zA-Z0-9_]+$/,
-                  message: "必须是英文数字或者下滑线组成",
+                  message: '必须是英文数字或者下滑线组成',
                 },
               ]}>
               <Input
@@ -77,13 +83,13 @@ class Login extends Component {
                 {
                   validator: (rule, value) => {
                     if (!value) {
-                      return Promise.reject("必填");
+                      return Promise.reject('必填');
                     } else if (value.length < 4) {
-                      return Promise.reject("至少4位");
+                      return Promise.reject('至少4位');
                     } else if (value.length > 12) {
-                      return Promise.reject("至多12位");
+                      return Promise.reject('至多12位');
                     } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-                      return Promise.reject("必须是英文数字或者下滑线组成");
+                      return Promise.reject('必须是英文数字或者下滑线组成');
                     } else {
                       return Promise.resolve();
                     }
@@ -111,6 +117,7 @@ class Login extends Component {
     );
   }
 }
+
 /*
 const FormItem = Form.Item;
 const NormalLoginForm = () => {
@@ -186,7 +193,7 @@ const NormalLoginForm = () => {
     </Form>
   );
 };
- */
+*/
 /**
  * 1.高阶函数
  *   1) 一类特别的函数
@@ -205,4 +212,5 @@ const NormalLoginForm = () => {
  *   4) 高阶组件也是高阶函数: 接收一个组件函数, 返回是一个新的组件函数
  */
 
-export default Login;
+// export default Login;
+export default connect(state => ({ user: state.user }), { login })(Login);

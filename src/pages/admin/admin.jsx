@@ -2,40 +2,42 @@
  *后台管理的路由组件
  */
 
-import React, { Component } from "react";
-import { Redirect, Switch, Route } from "react-router-dom";
-import { Layout } from "antd";
+import React, { Component } from 'react';
+import { Redirect, Switch, Route } from 'react-router-dom';
+import { Layout } from 'antd';
+import { connect } from 'react-redux';
 
-import memoryUtils from "../../utils/memoryUtils";
-import Header from "../../components/header";
-import LeftNav from "../../components/left-nav";
+// import memoryUtils from '../../utils/memoryUtils';
+import Header from '../../components/header';
+import LeftNav from '../../components/left-nav';
 
-import Home from "../home/home";
-import Category from "../category/category";
-import Product from "../product/product";
-import User from "../user/user";
-import Role from "../role/role";
-import Bar from "../charts/bar";
-import Line from "../charts/line";
-import Pie from "../charts/pie";
+import Home from '../home/home';
+import Category from '../category/category';
+import Product from '../product/product';
+import User from '../user/user';
+import Role from '../role/role';
+import Bar from '../charts/bar';
+import Line from '../charts/line';
+import Pie from '../charts/pie';
 
 const { Footer, Sider, Content } = Layout;
 
-export default class Admin extends Component {
+class Admin extends Component {
   render() {
-    const user = memoryUtils.user;
+    // const user = memoryUtils.user;
+    const user = this.props.user;
     if (!user || !user._id) {
       return <Redirect to='/login'></Redirect>;
     }
 
     return (
-      <Layout style={{ minHeight: "100%" }}>
+      <Layout style={{ minHeight: '100%' }}>
         <Sider>
           <LeftNav></LeftNav>
         </Sider>
         <Layout>
           <Header></Header>
-          <Content style={{ margin: 20, backgroundColor: "#fff" }}>
+          <Content style={{ margin: 20, backgroundColor: '#fff' }}>
             <Switch>
               <Route path='/home' component={Home}></Route>
               <Route path='/category' component={Category}></Route>
@@ -45,12 +47,14 @@ export default class Admin extends Component {
               <Route path='/bar' component={Bar}></Route>
               <Route path='/line' component={Line}></Route>
               <Route path='/pie' component={Pie}></Route>
-              <Redirect to="/home"></Redirect>
+              <Redirect to='/home'></Redirect>
             </Switch>
           </Content>
-          <Footer style={{ textAlign: "center", color: "#aaa" }}>Footer</Footer>
+          <Footer style={{ textAlign: 'center', color: '#aaa' }}>Footer</Footer>
         </Layout>
       </Layout>
     );
   }
 }
+
+export default connect(state => ({ user: state.user }), {})(Admin);

@@ -1,22 +1,24 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { message, Modal } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
 
-import "./index.less";
-import weatherPng from "./imgs/weather.png";
-import LinkButton from "../link-button";
-import { reqWeather } from "../../api/index";
-import menuList from "../../config/menuConfig";
-import { formatDate } from "../../utils/dateUtils";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
+import './index.less';
+import weatherPng from './imgs/weather.png';
+import LinkButton from '../link-button';
+import { reqWeather } from '../../api/index';
+import menuList from '../../config/menuConfig';
+import { formatDate } from '../../utils/dateUtils';
+// import memoryUtils from '../../utils/memoryUtils';
+// import storageUtils from '../../utils/storageUtils';
+import { logout } from '../../redux/actions';
 
 class Header extends Component {
   state = {
-    city: "",
-    weather: "",
-    currentTime: "",
+    city: '',
+    weather: '',
+    currentTime: '',
   };
 
   getCurrentTime = () => {
@@ -26,18 +28,20 @@ class Header extends Component {
   };
 
   getWeather = async () => {
-    const { city, weather } = await reqWeather("上海");
+    const { city, weather } = await reqWeather('上海');
     this.setState({ city, weather });
   };
 
   getTitle = () => {
-    let title = "";
+    let title = '';
     const path = this.props.location.pathname;
     menuList.forEach(item => {
       if (item.key === path) {
         title = item.title;
       } else if (item.children) {
-        const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
+        const cItem = item.children.find(
+          cItem => path.indexOf(cItem.key) === 0
+        );
         if (cItem) {
           title = cItem.title;
         }
@@ -48,13 +52,14 @@ class Header extends Component {
 
   logOut = () => {
     Modal.confirm({
-      title: "确定退出?",
+      title: '确定退出?',
       icon: <ExclamationCircleOutlined />,
       onOk: () => {
-        memoryUtils.user = {};
-        storageUtils.removeUser();
-        this.props.history.replace("/login");
-        message.success("退出成功");
+        // memoryUtils.user = {};
+        // storageUtils.removeUser();
+        // this.props.history.replace('/login');
+        // message.success('退出成功');
+        this.props.logout();
       },
     });
   };
@@ -71,9 +76,11 @@ class Header extends Component {
   render() {
     const { city, weather, currentTime } = this.state;
 
-    const title = this.getTitle();
+    // const title = this.getTitle();
+    const title = this.props.headTitle;
 
-    const user = memoryUtils.user;
+    // const user = memoryUtils.user;
+    const user = this.props.user;
 
     return (
       <header>
@@ -96,4 +103,7 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default connect(
+  state => ({ headTitle: state.headTitle, user: state.user }),
+  {logout}
+)(withRouter(Header));
